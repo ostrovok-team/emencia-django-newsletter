@@ -24,7 +24,6 @@ setup(name='emencia',
       author=emencia.__author__,
       author_email=emencia.__email__,
       url=emencia.__url__,
-
       license=emencia.__license__,
       packages=find_packages(exclude=['demo']),
       namespace_packages=['emencia',],
