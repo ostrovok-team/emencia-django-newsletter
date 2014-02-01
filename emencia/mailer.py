@@ -9,6 +9,7 @@ from StringIO import StringIO
 from datetime import datetime
 from datetime import timedelta
 from smtplib import SMTPRecipientsRefused
+from bs4 import BeautifulSoup
 
 try:
     from email.mime.multipart import MIMEMultipart
@@ -85,6 +86,7 @@ class NewsLetterSender(object):
         self.newsletter = newsletter
         self.newsletter_template = Template(self.newsletter.content)
         self.title_template = Template(self.newsletter.title)
+        self.attachments = []
 
     def build_message(self, contact):
         """
@@ -169,17 +171,29 @@ class NewsLetterSender(object):
 
         link_site = ''
         if INCLUDE_SITE_LINKS:
-            link_site = render_to_string('newsletter/newsletter_link_site.html', context)
+            site_link_markup = render_to_string(
+                'newsletter/newsletter_link_site.html',
+                context
+            )
+            link_site = BeautifulSoup(site_link_markup)
 
         content = body_insertion(content, link_site)
 
         if INCLUDE_UNSUBSCRIPTION:
-            unsubscription = render_to_string('newsletter/newsletter_link_unsubscribe.html', context)
+            unsubscription_link_markup = render_to_string(
+                'newsletter/newsletter_link_unsubscribe.html',
+                context
+            )
+            unsubscription = BeautifulSoup(unsubscription_link_markup)
             content = body_insertion(content, unsubscription, end=True)
 
         if TRACKING_IMAGE:
-            image_tracking = render_to_string('newsletter/newsletter_image_tracking.html', context)
+            tracking_image_markup = render_to_string(
+                'newsletter/newsletter_image_tracking.html', context
+            )
+            image_tracking = BeautifulSoup(tracking_image_markup)
             content = body_insertion(content, image_tracking, end=True)
+
         return smart_unicode(content)
 
     def update_newsletter_status(self):
