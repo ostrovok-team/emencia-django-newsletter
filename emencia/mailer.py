@@ -428,11 +428,14 @@ class NewsLetterExpedition(NewsLetterSender):
         """
         newsletter = self.newsletter
 
-        title = 'smtp-%s (%s), nl-%s (%s)' % (
-                        self.mailer.server.id, self.mailer.server.name[:10],
-                        newsletter.id, newsletter.title[:10])
+        title = u'smtp-{} ({}), nl-{} ({})'.format(
+            self.mailer.server.id,
+            self.mailer.server.name[:10],
+            newsletter.id,
+            newsletter.title[:10]
+        )
         # ajust len
-        title = '%-30s' % title
+        title = u'{}-30s'.format(title)
 
         self.attachments = self.build_attachments()
 
@@ -440,22 +443,30 @@ class NewsLetterExpedition(NewsLetterSender):
 
         number_of_recipients = len(expedition_list)
         if self.verbose:
-            print '%s %s: %i emails will be sent' % (
-                    datetime.now().strftime('%Y-%m-%d'),
-                    title, number_of_recipients)
+            print u'{:%Y-%m-%d} {}: {} emails will be sent'.format(
+                datetime.now(),
+                title,
+                number_of_recipients
+            ).encode('utf-8')
 
         try:
             i = 1
             for contact in expedition_list:
                 if self.verbose:
-                    print '%s %s: processing %s/%s (%s)' % (
-                        datetime.now().strftime('%H:%M:%S'),
-                        title, i, number_of_recipients, contact.pk)
+                    print u'{:%H:%M:%S} {}: processing {}/{} ({})'.format(
+                        datetime.now(),
+                        title,
+                        i,
+                        number_of_recipients,
+                        contact.pk
+                    ).encode('utf-8')
                 try:
                     message = self.build_message(contact)
-                    yield (smart_str(self.newsletter.header_sender),
-                                       contact.email,
-                                       message.as_string())
+                    yield (
+                        smart_str(self.newsletter.header_sender),
+                        contact.email,
+                        message.as_string()
+                    )
                 except Exception, e:
                     exception = e
                 else:
