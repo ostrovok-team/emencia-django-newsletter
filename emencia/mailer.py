@@ -258,6 +258,7 @@ class Mailer(NewsLetterSender):
 
     def run(self):
         """Send the mails"""
+
         if not self.can_send:
             return
 
@@ -280,9 +281,10 @@ class Mailer(NewsLetterSender):
 
             try:
                 message = self.build_message(contact)
+
                 self.smtp.sendmail(smart_str(self.newsletter.header_sender),
-                                   contact.email,
-                                   message.as_string())
+                               contact.email,
+                               message.as_string())
             except Exception, e:
                 exception = e
             else:
