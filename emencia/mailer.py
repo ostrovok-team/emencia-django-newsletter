@@ -279,18 +279,18 @@ class Mailer(NewsLetterSender):
                 print '- Processing %s/%s (%s)' % (
                     i, number_of_recipients, contact.pk)
 
-            # try:
-            message = self.build_message(contact)
+            try:
+                message = self.build_message(contact)
 
-            self.smtp.sendmail(smart_str(self.newsletter.header_sender),
-                           contact.email,
-                           message.as_string())
-            # except Exception, e:
-            #     exception = e
-            # else:
-            #     exception = None
+                self.smtp.sendmail(smart_str(self.newsletter.header_sender),
+                               contact.email,
+                               message.as_string())
+            except Exception, e:
+                exception = e
+            else:
+                exception = None
 
-            # self.update_contact_status(contact, exception)
+            self.update_contact_status(contact, exception)
 
             if SLEEP_BETWEEN_SENDING:
                 time.sleep(SLEEP_BETWEEN_SENDING)
