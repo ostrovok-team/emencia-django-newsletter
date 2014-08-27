@@ -1,10 +1,14 @@
 """Urls for the demo of emencia.django.newsletter"""
 from django.contrib import admin
-from django.conf.urls.defaults import url
-from django.conf.urls.defaults import include
-from django.conf.urls.defaults import patterns
-from django.conf.urls.defaults import handler404
-from django.conf.urls.defaults import handler500
+try:
+    from django.conf.urls.defaults import url
+    from django.conf.urls.defaults import include
+    from django.conf.urls.defaults import patterns
+    from django.conf.urls.defaults import handler404
+    from django.conf.urls.defaults import handler500
+except ImportError:
+    # Django 1.6+
+    from django.conf.urls import url, include, patterns, handler404, handler500
 
 admin.autodiscover()
 
