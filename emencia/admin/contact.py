@@ -5,8 +5,12 @@ from datetime import datetime
 
 from django.contrib import admin
 from django.dispatch import Signal
-from django.conf.urls.defaults import url
-from django.conf.urls.defaults import patterns
+try:
+    from django.conf.urls.defaults import url
+    from django.conf.urls.defaults import patterns
+except ImportError:
+    # Django 1.6+
+    from django.conf.urls import url, patterns
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.template import RequestContext

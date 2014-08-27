@@ -1,6 +1,10 @@
 """Urls for the emencia Mailing List"""
-from django.conf.urls.defaults import url
-from django.conf.urls.defaults import patterns
+try:
+    from django.conf.urls.defaults import url
+    from django.conf.urls.defaults import patterns
+except ImportError:
+    # Django 1.6+
+    from django.conf.urls import url, patterns
 
 from emencia import settings
 

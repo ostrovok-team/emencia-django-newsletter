@@ -1,7 +1,12 @@
 """Default urls for the emencia"""
-from django.conf.urls.defaults import url
-from django.conf.urls.defaults import include
-from django.conf.urls.defaults import patterns
+try:
+    from django.conf.urls.defaults import url
+    from django.conf.urls.defaults import include
+    from django.conf.urls.defaults import patterns
+except ImportError:
+    # Django 1.6+
+    from django.conf.urls import url, include, patterns
+
 
 urlpatterns = patterns('',
                        url(r'^mailing/', include('emencia.urls.mailing_list')),
